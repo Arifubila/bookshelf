@@ -1,20 +1,352 @@
-<!DOCTYPE html>
+```html
+<!doctype html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Bookshelf App</title>
 
     <script defer src="main.js"></script>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f7f6;
+        color: #1f2937;
+        line-height: 1.6;
+      }
+
+      /* =========================
+         HEADER
+      ========================= */
+
+      header {
+        background: linear-gradient(135deg, #166534, #15803d);
+        color: white;
+        padding: 32px 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      header h1 {
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      /* =========================
+         MAIN
+      ========================= */
+
+      main {
+        width: min(1100px, calc(100% - 32px));
+        margin: 30px auto 50px;
+        display: grid;
+        gap: 24px;
+      }
+
+      section {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 26px;
+        box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+        border: 1px solid #e5e7eb;
+      }
+
+      section h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        color: #111827;
+      }
+
+      /* =========================
+         FORM
+      ========================= */
+
+      #bookForm {
+        display: grid;
+        gap: 17px;
+      }
+
+      #bookForm > div {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+
+      label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+      }
+
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        height: 44px;
+        padding: 0 14px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background: #ffffff;
+        color: #111827;
+        font-size: 14px;
+        outline: none;
+        transition: 0.2s ease;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus {
+        border-color: #16a34a;
+        box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+      }
+
+      /* Checkbox */
+
+      #bookFormIsComplete {
+        width: 17px;
+        height: 17px;
+        accent-color: #16a34a;
+        cursor: pointer;
+      }
+
+      #bookForm > div:nth-child(4) {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 0;
+      }
+
+      #bookForm > div:nth-child(4) label {
+        cursor: pointer;
+      }
+
+      /* =========================
+         BUTTON
+      ========================= */
+
+      button {
+        border: none;
+        border-radius: 9px;
+        padding: 11px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      #bookFormSubmit {
+        background: #16a34a;
+        color: white;
+        min-height: 46px;
+      }
+
+      #bookFormSubmit:hover {
+        background: #15803d;
+      }
+
+      #bookFormSubmit span {
+        font-weight: 700;
+      }
+
+      /* =========================
+         SEARCH
+      ========================= */
+
+      #searchBook {
+        display: flex;
+        align-items: end;
+        gap: 12px;
+      }
+
+      #searchBook label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+      }
+
+      #searchBookTitle {
+        flex: 1;
+      }
+
+      #searchSubmit {
+        height: 44px;
+        background: #111827;
+        color: white;
+        min-width: 90px;
+      }
+
+      #searchSubmit:hover {
+        background: #374151;
+      }
+
+      /* =========================
+         BOOK LIST
+      ========================= */
+
+      #incompleteBookList,
+      #completeBookList {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 18px;
+      }
+
+      [data-testid="bookItem"] {
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 20px;
+        transition: all 0.2s ease;
+        position: relative;
+      }
+
+      [data-testid="bookItem"]:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+        border-color: #bbf7d0;
+      }
+
+      [data-testid="bookItemTitle"] {
+        font-size: 18px;
+        color: #111827;
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+
+      [data-testid="bookItemAuthor"],
+      [data-testid="bookItemYear"] {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 5px;
+      }
+
+      [data-testid="bookItem"] > div {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      [data-testid="bookItemIsCompleteButton"] {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      [data-testid="bookItemIsCompleteButton"]:hover {
+        background: #bbf7d0;
+      }
+
+      [data-testid="bookItemEditButton"] {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      [data-testid="bookItemEditButton"]:hover {
+        background: #fde68a;
+      }
+
+      [data-testid="bookItemDeleteButton"] {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+
+      [data-testid="bookItemDeleteButton"]:hover {
+        background: #fecaca;
+      }
+
+      /* =========================
+         EMPTY STATE
+      ========================= */
+
+      #incompleteBookList:empty::before,
+      #completeBookList:empty::before {
+        content: "Belum ada buku";
+        display: block;
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 30px 15px;
+        color: #9ca3af;
+        border: 1px dashed #d1d5db;
+        border-radius: 12px;
+      }
+
+      /* =========================
+         RESPONSIVE
+      ========================= */
+
+      @media (max-width: 650px) {
+        header {
+          padding: 25px 16px;
+        }
+
+        header h1 {
+          font-size: 26px;
+        }
+
+        main {
+          width: min(100% - 20px, 1100px);
+          margin-top: 20px;
+        }
+
+        section {
+          padding: 20px;
+          border-radius: 13px;
+        }
+
+        section h2 {
+          font-size: 18px;
+        }
+
+        #searchBook {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        #searchSubmit {
+          width: 100%;
+        }
+
+        #incompleteBookList,
+        #completeBookList {
+          grid-template-columns: 1fr;
+        }
+
+        [data-testid="bookItem"] > div {
+          flex-direction: column;
+        }
+
+        [data-testid="bookItem"] button {
+          width: 100%;
+        }
+      }
+    </style>
   </head>
+
   <body>
     <header>
-      <h1>Bookshelf App</h1>
+      <h1>📚 Bookshelf App</h1>
     </header>
 
     <main>
       <section>
         <h2>Tambah Buku Baru</h2>
+
         <form id="bookForm" data-testid="bookForm">
           <div>
             <label for="bookFormTitle">Judul</label>
@@ -25,6 +357,7 @@
               data-testid="bookFormTitleInput"
             />
           </div>
+
           <div>
             <label for="bookFormAuthor">Penulis</label>
             <input
@@ -34,6 +367,7 @@
               data-testid="bookFormAuthorInput"
             />
           </div>
+
           <div>
             <label for="bookFormYear">Tahun</label>
             <input
@@ -43,33 +377,41 @@
               data-testid="bookFormYearInput"
             />
           </div>
+
           <div>
-            <label for="bookFormIsComplete">Selesai dibaca</label>
             <input
               id="bookFormIsComplete"
               type="checkbox"
               data-testid="bookFormIsCompleteCheckbox"
             />
+
+            <label for="bookFormIsComplete"> Selesai dibaca </label>
           </div>
+
           <button
             id="bookFormSubmit"
             type="submit"
             data-testid="bookFormSubmitButton"
           >
-            Masukkan Buku ke rak <span>Belum selesai dibaca</span>
+            Masukkan Buku ke rak
+            <span>Belum selesai dibaca</span>
           </button>
         </form>
       </section>
 
       <section>
-        <h2>Cari Buku</h2>
+        <h2>🔎 Cari Buku</h2>
+
         <form id="searchBook" data-testid="searchBookForm">
           <label for="searchBookTitle">Judul</label>
+
           <input
             id="searchBookTitle"
             type="text"
+            placeholder="Cari berdasarkan judul buku..."
             data-testid="searchBookFormTitleInput"
           />
+
           <button
             id="searchSubmit"
             type="submit"
@@ -81,18 +423,23 @@
       </section>
 
       <section>
-        <h2>Belum selesai dibaca</h2>
+        <h2>📖 Belum selesai dibaca</h2>
 
         <div id="incompleteBookList" data-testid="incompleteBookList">
           <div data-bookid="123123123" data-testid="bookItem">
             <h3 data-testid="bookItemTitle">Judul Buku 1</h3>
+
             <p data-testid="bookItemAuthor">Penulis: Penulis Buku 1</p>
+
             <p data-testid="bookItemYear">Tahun: 2030</p>
+
             <div>
               <button data-testid="bookItemIsCompleteButton">
                 Selesai dibaca
               </button>
+
               <button data-testid="bookItemDeleteButton">Hapus Buku</button>
+
               <button data-testid="bookItemEditButton">Edit Buku</button>
             </div>
           </div>
@@ -100,18 +447,23 @@
       </section>
 
       <section>
-        <h2>Selesai dibaca</h2>
+        <h2>✅ Selesai dibaca</h2>
 
         <div id="completeBookList" data-testid="completeBookList">
           <div data-bookid="456456456" data-testid="bookItem">
             <h3 data-testid="bookItemTitle">Judul Buku 2</h3>
+
             <p data-testid="bookItemAuthor">Penulis: Penulis Buku 2</p>
+
             <p data-testid="bookItemYear">Tahun: 2030</p>
+
             <div>
               <button data-testid="bookItemIsCompleteButton">
                 Belum selesai dibaca
               </button>
+
               <button data-testid="bookItemDeleteButton">Hapus Buku</button>
+
               <button data-testid="bookItemEditButton">Edit Buku</button>
             </div>
           </div>
@@ -120,3 +472,4 @@
     </main>
   </body>
 </html>
+```
